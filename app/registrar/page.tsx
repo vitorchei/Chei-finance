@@ -59,10 +59,21 @@ export default function RegistrarPage() {
 
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState<ToastState>(null)
+  const [userName, setUserName] = useState('mestre chei')
 
   const today = new Date().toISOString().split('T')[0]
 
   useEffect(() => {
+    async function fetchName() {
+      const { data } = await supabase
+        .from('user_settings')
+        .select('value')
+        .eq('key', 'user_name')
+        .single()
+      const name = (data as { value: string } | null)?.value
+      if (name) setUserName(name)
+    }
+
     async function fetchTypes() {
       const { data } = await supabase
         .from('transaction_types')
@@ -74,6 +85,7 @@ export default function RegistrarPage() {
       setExpenseTypes(rows.filter(r => r.transaction_type === 'expense').map(r => r.label))
       setTypesLoading(false)
     }
+    fetchName()
     fetchTypes()
   }, [])
 
@@ -163,7 +175,7 @@ export default function RegistrarPage() {
 
       <div className="pt-12 text-center">
         <h1 className="text-[32px] font-bold text-white mb-3 leading-tight">
-          Bem vindo de volta mestre chei
+          Bem vindo de volta {userName}
         </h1>
         <p className="text-lg text-gray-400">
           o que gostaria de registrar nesta{' '}

@@ -9,6 +9,15 @@ import { formatCurrency } from '@/lib/utils'
 type ToastState = { message: string; type: 'success' | 'error' } | null
 type Tab = 'income' | 'expense'
 
+async function fetchUserName(): Promise<string> {
+  const { data } = await supabase
+    .from('user_settings')
+    .select('value')
+    .eq('key', 'user_name')
+    .single()
+  return (data as { value: string } | null)?.value ?? ''
+}
+
 function TrashIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -31,6 +40,11 @@ export default function ConfiguracoesPage() {
   const [newLabel, setNewLabel] = useState('')
   const [adding, setAdding] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  // ─── User name ──────────────────────────────────────────────────────────────
+  const [userName, setUserName] = useState('')
+  const [savedUserName, setSavedUserName] = useState('')
+  const [savingName, setSavingName] = useState(false)
 
   // ─── Toast ──────────────────────────────────────────────────────────────────
   const [toast, setToast] = useState<ToastState>(null)
@@ -60,8 +74,15 @@ export default function ConfiguracoesPage() {
       setTypesLoading(false)
     }
 
+    async function fetchName() {
+      const name = await fetchUserName()
+      setUserName(name)
+      setSavedUserName(name)
+    }
+
     fetchBudget()
     fetchTypes()
+    fetchName()
   }, [])
 
   // ─── Handlers ───────────────────────────────────────────────────────────────
@@ -123,6 +144,24 @@ export default function ConfiguracoesPage() {
       setToast({ message: 'Erro ao excluir. Tente novamente.', type: 'error' })
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  async function handleSaveName() {
+    const name = userName.trim()
+    if (!name) return
+    setSavingName(true)
+    try {
+      const { error } = await supabase
+        .from('user_settings')
+        .upsert({ key: 'user_name', value: name, updated_at: new Date().toISOString() }, { onConflict: 'key' })
+      if (error) throw error
+      setSavedUserName(name)
+      setToast({ message: 'Nome atualizado!', type: 'success' })
+    } catch {
+      setToast({ message: 'Erro ao salvar. Tente novamente.', type: 'error' })
+    } finally {
+      setSavingName(false)
     }
   }
 
@@ -271,6 +310,37 @@ export default function ConfiguracoesPage() {
             {adding ? '...' : 'Adicionar'}
           </button>
         </div>
+      </section>
+
+      {/* Personalização */}
+      <section className="bg-[#161616] border border-[#222] rounded-3xl p-5 space-y-5">
+        <div>
+          <p className="text-white font-semibold">Personalização</p>
+          <p className="text-xs text-gray-500 mt-0.5">Como quer ser chamado no app</p>
+        </div>
+
+        <div>
+          <label className="text-xs text-gray-500 tracking-wide font-medium">Seu nome</label>
+          <input
+            type="text"
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') handleSaveName() }}
+            placeholder="mestre chei"
+            className="w-full mt-3 bg-[#1e1e1e] rounded-xl px-4 py-3 text-sm text-white placeholder-[#444] outline-none focus:ring-1 focus:ring-white/15"
+          />
+          {savedUserName ? (
+            <p className="text-xs text-gray-600 mt-2">Atual: <span className="text-gray-400">{savedUserName}</span></p>
+          ) : null}
+        </div>
+
+        <button
+          onClick={handleSaveName}
+          disabled={!userName.trim() || savingName}
+          className="w-full py-4 rounded-2xl bg-white text-black font-bold text-base hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {savingName ? 'Salvando...' : 'Salvar'}
+        </button>
       </section>
 
       {/* Sobre */}

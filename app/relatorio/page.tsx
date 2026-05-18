@@ -90,10 +90,9 @@ function DonutChart({ data }: { data: { name: string; value: number; color: stri
 
 function ProgressBar({ pct }: { pct: number }) {
   const clamped = Math.min(pct, 100)
-  const color = pct >= 90 ? 'bg-red-500' : pct >= 70 ? 'bg-yellow-400' : 'bg-green-500'
   return (
     <div className="w-full h-2.5 bg-[#272727] rounded-full overflow-hidden">
-      <div className={`h-full rounded-full transition-all duration-700 ${color}`} style={{ width: `${clamped}%` }} />
+      <div className="h-full rounded-full transition-all duration-700 bg-yellow-400" style={{ width: `${clamped}%` }} />
     </div>
   )
 }
