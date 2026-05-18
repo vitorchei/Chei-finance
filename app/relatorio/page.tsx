@@ -238,13 +238,13 @@ export default function RelatorioPage() {
   const balance = totalIncome - totalExpenses
   const expensePct = totalIncome > 0 ? (totalExpenses / totalIncome) * 100 : 0
 
-  const uniqueSources = [...new Set(income.filter(t => t.source).map(t => t.source!))]
+  const uniqueSources = Array.from(new Set(income.filter(t => t.source).map(t => t.source!)))
   const incomeBySource: Record<string, number> = {}
   for (const src of uniqueSources) {
     incomeBySource[src] = income.filter(t => t.source === src).reduce((s, t) => s + t.amount, 0)
   }
 
-  const uniqueExpenseTypes = [...new Set(expenses.filter(t => t.expense_type).map(t => t.expense_type!))]
+  const uniqueExpenseTypes = Array.from(new Set(expenses.filter(t => t.expense_type).map(t => t.expense_type!)))
   const expensesByType: Record<string, number> = {}
   for (const et of uniqueExpenseTypes) {
     expensesByType[et] = expenses.filter(t => t.expense_type === et).reduce((s, t) => s + t.amount, 0)
