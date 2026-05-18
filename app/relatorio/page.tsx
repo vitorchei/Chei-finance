@@ -662,36 +662,40 @@ export default function RelatorioPage() {
             </div>
 
             {/* Controle de Lazer */}
-            {lazerBudget > 0 && (
-              <div className="mt-6 bg-[#161616] border border-[#222] rounded-3xl p-5 space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-400" />
-                  <p className="text-xs text-gray-400 tracking-wide font-semibold">Controle de Lazer</p>
-                </div>
-
-                <div className="flex justify-between items-baseline">
-                  <span className="text-2xl font-bold text-white tabular-nums">{formatCurrency(lazerSpent)}</span>
-                  <span className="text-sm text-gray-500">de {formatCurrency(lazerBudget)}</span>
-                </div>
-
-                <ProgressBar pct={lazerPct} />
-
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-gray-500">{formatPercent(lazerPct)} utilizado</span>
-                  <span className={
-                    lazerRemaining < 0
-                      ? 'text-red-400 font-semibold'
-                      : lazerPct >= 70
-                        ? 'text-yellow-400 font-medium'
-                        : 'text-green-400 font-medium'
-                  }>
-                    {lazerRemaining < 0
-                      ? `${formatCurrency(Math.abs(lazerRemaining))} estourado`
-                      : `${formatCurrency(lazerRemaining)} restantes`}
-                  </span>
-                </div>
+            <div className="mt-6 bg-[#161616] border border-[#222] rounded-3xl p-5 space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-yellow-400" />
+                <p className="text-xs text-gray-400 tracking-wide font-semibold">Controle de Lazer</p>
               </div>
-            )}
+
+              {lazerBudget > 0 ? (
+                <>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-2xl font-bold text-white tabular-nums">{formatCurrency(lazerSpent)}</span>
+                    <span className="text-sm text-gray-500">de {formatCurrency(lazerBudget)}</span>
+                  </div>
+
+                  <ProgressBar pct={lazerPct} />
+
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-gray-500">{formatPercent(lazerPct)} utilizado</span>
+                    <span className={
+                      lazerRemaining < 0
+                        ? 'text-red-400 font-semibold'
+                        : lazerPct >= 70
+                          ? 'text-yellow-400 font-medium'
+                          : 'text-green-400 font-medium'
+                    }>
+                      {lazerRemaining < 0
+                        ? `${formatCurrency(Math.abs(lazerRemaining))} estourado`
+                        : `${formatCurrency(lazerRemaining)} restantes`}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <p className="text-xs text-gray-600">Defina um teto em Configurações.</p>
+              )}
+            </div>
           </>
         )}
       </div>

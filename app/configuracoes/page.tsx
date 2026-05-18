@@ -75,8 +75,10 @@ export default function ConfiguracoesPage() {
     try {
       const { error } = await supabase
         .from('monthly_budgets')
-        .update({ limit_amount: value, updated_at: new Date().toISOString() })
-        .eq('expense_type', 'lazer')
+        .upsert(
+          { expense_type: 'lazer', limit_amount: value, updated_at: new Date().toISOString() },
+          { onConflict: 'expense_type' }
+        )
       if (error) throw error
       setCurrentLimit(value)
       setToast({ message: 'Teto de lazer atualizado!', type: 'success' })
