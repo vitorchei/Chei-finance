@@ -40,6 +40,12 @@ input[type='number'] {
   border-radius: 99px;
 }
 
+input,
+textarea,
+select {
+  font-size: max(16px, 1em);
+}
+
 .recharts-wrapper,
 .recharts-wrapper svg,
 .recharts-wrapper *:focus {
