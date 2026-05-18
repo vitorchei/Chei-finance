@@ -377,11 +377,11 @@ export default function RelatorioPage() {
                 return (
                   <div
                     key={`${item.year}-${item.month}`}
-                    className={`rounded-2xl px-4 py-4 border ${isCurrent ? 'bg-green-950/40 border-green-900/50' : 'bg-[#161616] border-[#222]'}`}
+                    className={`rounded-2xl px-4 py-4 border ${isCurrent ? 'bg-blue-950/40 border-blue-900/50' : 'bg-[#161616] border-[#222]'}`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className={`text-xs font-semibold tracking-wide mb-1 ${isCurrent ? 'text-green-500' : 'text-gray-500'}`}>
+                        <p className={`text-xs font-semibold tracking-wide mb-1 ${isCurrent ? 'text-blue-400' : 'text-gray-500'}`}>
                           {label}{isCurrent ? ' · atual' : ''}
                         </p>
                         <p className="text-2xl font-bold text-white tabular-nums">
@@ -390,7 +390,7 @@ export default function RelatorioPage() {
                       </div>
 
                       {diff !== null && (
-                        <div className={`flex items-center gap-1 mt-1 flex-shrink-0 ${diff >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <div className={`flex items-center gap-1 mt-1 flex-shrink-0 ${diff >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
                             {diff >= 0
                               ? <path d="M12 19V5M5 12l7-7 7 7" />
@@ -404,7 +404,7 @@ export default function RelatorioPage() {
                     </div>
 
                     {diff !== null && (
-                      <p className={`text-xs mt-1.5 ${diff >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <p className={`text-xs mt-1.5 ${diff >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
                         {diff >= 0 ? 'a mais' : 'a menos'} que o mês anterior
                       </p>
                     )}
@@ -447,7 +447,7 @@ export default function RelatorioPage() {
                       {barData.map((entry, i) => (
                         <Cell
                           key={entry.index}
-                          fill={i === selectedBarIndex ? '#22c55e' : '#2a2a2a'}
+                          fill={i === selectedBarIndex ? '#2563EB' : '#93C5FD'}
                         />
                       ))}
                     </Bar>
@@ -774,12 +774,12 @@ export default function RelatorioPage() {
           className="bg-[#161616] border border-[#222] hover:bg-[#1e1e1e] active:scale-95 transition-all rounded-3xl p-5 text-left"
         >
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-2 h-2 rounded-full bg-purple-500" />
-            <span className="text-xs text-gray-500 font-semibold tracking-wide">Entradas</span>
+            <div className="w-2 h-2 rounded-full bg-blue-500" />
+            <span className="text-xs text-gray-500 font-semibold tracking-wide">Comparativo de entradas</span>
           </div>
           <p className="text-xl font-bold text-white tabular-nums">{formatCurrency(totalIncome)}</p>
           {incomeDiff !== null && prevTotalIncome !== null && prevTotalIncome > 0 ? (
-            <div className={`flex items-center gap-1 mt-1 ${incomeDiff >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            <div className={`flex items-center gap-1 mt-1 ${incomeDiff >= 0 ? 'text-blue-400' : 'text-red-400'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 flex-shrink-0">
                 {incomeDiff >= 0
                   ? <path d="M12 19V5M5 12l7-7 7 7" />
@@ -792,7 +792,7 @@ export default function RelatorioPage() {
           ) : (
             <p className="text-xs text-gray-600 mt-1">Sem dados anteriores</p>
           )}
-          <p className="text-xs text-purple-700 mt-2 flex items-center gap-1">
+          <p className="text-xs text-blue-800 mt-2 flex items-center gap-1">
             Ver histórico
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><path d="m9 18 6-6-6-6" /></svg>
           </p>
